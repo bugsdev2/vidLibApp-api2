@@ -13,7 +13,7 @@ const conStr = "mongodb+srv://adithyamanikumar:bugs1234@cluster0.wem7prh.mongodb
 let database = async getDb();
 
 function getDb(){
-	mongoClient.connect(conStr).then(clientObj => {
+	await mongoClient.connect(conStr).then(clientObj => {
 		return clientObj.db('vidLib');
 	});
 }
