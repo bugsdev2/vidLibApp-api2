@@ -1,0 +1,56 @@
+Entity Model
+
+Categories
+	categoryId 	: number (Primary Key)
+	categoryName	: string
+	
+Videos
+	videoId		: number (PK)
+	title 		: string
+	url		: string
+	description	: string
+	likes		: number
+	dislikes	: number
+	views		: number
+	comments	: string[] (array of strings)
+	
+Admin
+	adminId		: string (PK)
+	name		: string
+	password	: string
+	email		: string
+	mobile		: string
+
+Users
+	userId		: string (PK)
+	username	: string 
+	password	: string
+	email		: string
+	mobile		: string
+	
+API Requests
+
+Request Type		Route Path		Description
+----------------------------------------------------------------------------------
+GET			/get-admin		it can read and return users
+
+GET			/get-users		it returns all users
+
+POST			/add-user		it adds a new user
+
+GET			/get-categories		it gets all categories
+
+POST			/add-category		it adds a new category
+
+GET			/get-videos		it gets all the videos
+
+GET			/get-video/id		it gets a specific video by id
+
+GET			/category/videos	it gets all videos in a specific category
+
+POST			/add-video		it adds a new video
+
+PUT			/update-video/id	it modifies video details
+
+DELETE 			/delete-video/id	it deletes specific video by id
+
