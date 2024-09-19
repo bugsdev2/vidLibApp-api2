@@ -13,7 +13,7 @@ const conStr = "mongodb+srv://adithyamanikumar:bugs1234@cluster0.wem7prh.mongodb
 let db = getDb();
 function getDb(){
 	mongoClient.connect(conStr).then(clientObj => {
-		db = clientObj.db('vidLib');
+		return clientObj.db('vidLib');
 	});
 }
 
