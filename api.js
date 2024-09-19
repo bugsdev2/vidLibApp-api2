@@ -10,12 +10,12 @@ app.use(cors());
 const conStr = "mongodb+srv://adithyamanikumar:bugs1234@cluster0.wem7prh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // CREATTING A VARIABLE TO STORE DATABASE
-let database = async getDb();
-
+let database = getDb();
+let db;
 function getDb(){
-	const clientObj = await mongoClient.connect(conStr);
-	db = await clientObj.db('vidLib');
-	return db;
+	mongoClient.connect(conStr).then(clientObj => {
+		db = clientObj.db('vidLib');
+	});
 }
 
 const PORT = process.env.PORT || 5000;
@@ -28,12 +28,6 @@ app.get('/', (req, res) => {
 	res.end('<h1>HELLO WORLD!</h1>');
 })
 
-
-
-database.then( res => {
-	db = res
-})
-	
 // GETS ALL USERS
 app.get('/get-users', (req, res) => {
 	db.collection('users').find({}).toArray().then(data => {
@@ -72,18 +66,18 @@ app.get('/get-admin', (req, res) => {
 
 // GETS ALL VIDEOS
 app.get('/get-videos/:category', (req, res) => {
-		let category = req.params.category;
-		if(category === 'all'){
-				db.collection('videos').find().toArray().then(data => {
-			res.send(data);
-			res.end();
+    let category = req.params.category;
+    if(category === 'all'){
+        db.collection('videos').find().toArray().then(data => {
+	    res.send(data);
+	    res.end();
 	});
-		} else {
-				db.collection('videos').find({category}).toArray().then(data => {
-						res.send(data);
-						res.end();
-				})
-		}
+    } else {
+        db.collection('videos').find({category}).toArray().then(data => {
+            res.send(data);
+            res.end();
+        })
+    }
 	
 })
 
@@ -97,10 +91,10 @@ app.get('/get-video/:id', (req, res) => {
 })
 
 app.delete('/delete-video/:id', (req, res) => {
-		const id = parseInt(req.params.id);
-		db.collection('videos').deleteOne({id: id}).then(() => {
-				res.end();
-		})
+    const id = parseInt(req.params.id);
+    db.collection('videos').deleteOne({id: id}).then(() => {
+        res.end();
+    })
 })
 
 // GETS ALL THE CATEGORIES
@@ -112,72 +106,68 @@ app.get('/categories', (req, res) => {
 })
 
 app.post('/add-category', (req, res) => {
-		
-		db.collection('categories').find({}).toArray().then(data => {
-				let count = 1;
-				let categoryId;
-				
-			 function checkIfExists(count){
-						if(data.find(item => item.id === count)){
-								return checkIfExists(count+1);            
-						} else {
-								return count;
-						}
-				}
-				
-				categoryId = checkIfExists(count)
-				
-				const category = req.body.new_category.toLowerCase().replaceAll(' ', '');
-				
-				const newCategory = {
-						id: categoryId,
-						category,
-						name: req.body.new_category
-				}
-				
-				db.collection('categories').insertOne(newCategory).then(() => {
-						console.log('New Category Added')
-				})
-		})
-		
-		res.end();
+    
+    db.collection('categories').find({}).toArray().then(data => {
+        let count = 1;
+        let categoryId;
+        
+       function checkIfExists(count){
+            if(data.find(item => item.id === count)){
+                return checkIfExists(count+1);            
+            } else {
+                return count;
+            }
+        }
+        
+        categoryId = checkIfExists(count)
+        
+        const category = req.body.new_category.toLowerCase().replaceAll(' ', '');
+        
+        const newCategory = {
+            id: categoryId,
+            category,
+            name: req.body.new_category
+        }
+        
+        db.collection('categories').insertOne(newCategory).then(() => {
+            console.log('New Category Added')
+        })
+    })
+    
+    res.end();
 })
 
 app.post('/add-video', (req, res) => {
-		db.collection('videos').find({}).toArray().then(data => {
-				let count = 1;
-				let videoId;
-				
-			 function checkIfExists(count){
-						if(data.find(item => item.id === count)){
-								return checkIfExists(count+1);            
-						} else {
-								return count;
-						}
-				}
-				
-				videoId = checkIfExists(count)
-				let URL;
-				req.body.url.includes('&') ? URL = req.body.url.slice(req.body.url.indexOf("v=")+2, req.body.url.indexOf("&")) : URL = req.body.url.slice(req.body.url.indexOf("v=")+2)
-				
-			let vidDetails = {
-					id: videoId,
-					title: req.body.title,
-					description: req.body.description,
-					category: req.body.category,
-				videoCode: URL
-			}
-			db.collection('videos').insertOne(vidDetails).then(() => {
-					console.log('New Video Added');
-			})
-			res.end()
-		})
+    db.collection('videos').find({}).toArray().then(data => {
+        let count = 1;
+        let videoId;
+        
+       function checkIfExists(count){
+            if(data.find(item => item.id === count)){
+                return checkIfExists(count+1);            
+            } else {
+                return count;
+            }
+        }
+        
+        videoId = checkIfExists(count)
+        let URL;
+        req.body.url.includes('&') ? URL = req.body.url.slice(req.body.url.indexOf("v=")+2, req.body.url.indexOf("&")) : URL = req.body.url.slice(req.body.url.indexOf("v=")+2)
+        
+	    let vidDetails = {
+	        id: videoId,
+	        title: req.body.title,
+	        description: req.body.description,
+	        category: req.body.category,
+		    videoCode: URL
+	    }
+	    db.collection('videos').insertOne(vidDetails).then(() => {
+	        console.log('New Video Added');
+	    })
+	    res.end()
+    })
 	
 })
-	
-
-
-
 
 
 export default app;
