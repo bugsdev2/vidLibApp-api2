@@ -27,7 +27,9 @@ app.get('/', (req, res) => {
 	res.end('<h1>HELLO WORLD!</h1>');
 })
 
-// GETS ALL USERS
+while (db) {
+	
+	// GETS ALL USERS
 app.get('/get-users', (req, res) => {
 	db.collection('users').find({}).toArray().then(data => {
 		res.send(data);
@@ -167,6 +169,10 @@ app.post('/add-video', (req, res) => {
     })
 	
 })
+	
+}
+
+
 
 
 export default app;
