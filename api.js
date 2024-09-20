@@ -53,10 +53,10 @@ app.post('/add-user/', (req, res) => {
 
 // CHECKS TO SEE IF USERNAME IS ALREADY TAKEN
 app.get('/check-user/:username',  (req, res) => {
-	const data = db.collection('users').find({username: req.params.username}).toArray()
-	res.send(data[0]);
-	res.end();
-	
+	db.collection('users').find({username: req.params.username}).toArray().then(data => {
+		res.send(data[0]);
+		res.end();
+	});
 })
  
 // GETS ADMIN DETAILS
