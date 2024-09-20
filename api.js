@@ -10,8 +10,14 @@ app.use(cors());
 const conStr = "mongodb+srv://adithyamanikumar:bugs1234@cluster0.wem7prh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const PORT = process.env.PORT || 5000;
 
-// CREATTING A VARIABLE TO STORE DATABASE
+// HOME PAGE
+app.get('/', (req, res) => {
+	res.end('<h1>HELLO WORLD!</h1>');
+})
+
 let database = getDb();
+
+// CREATTING A VARIABLE TO STORE DATABASE
 let db;
 function getDb(){
 	mongoClient.connect(conStr).then(clientObj => {
@@ -21,10 +27,7 @@ function getDb(){
 		app.listen(PORT)
 		console.log(`SERVER STARTED ON PORT NO. ${PORT}`)
 	}).then(_ => {
-		// HOME PAGE
-		app.get('/', (req, res) => {
-			res.end('<h1>HELLO WORLD!</h1>');
-		})
+		
 
 		// GETS ALL USERS
 		app.get('/get-users', (req, res) => {
