@@ -51,10 +51,10 @@ app.post('/add-user/', async (req, res) => {
 
 // CHECKS TO SEE IF USERNAME IS ALREADY TAKEN
 app.get('/check-user/:username', async (req, res) => {
-	db.collection('users').find({username: req.params.username}).toArray().then(data => {
-		res.send(data[0]);
-		res.end();
-	})
+	const data = await db.collection('users').find({username: req.params.username}).toArray()
+	res.send(await data[0]);
+	res.end();
+	
 })
  
 // GETS ADMIN DETAILS
