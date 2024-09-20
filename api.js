@@ -30,7 +30,7 @@ function getDb(){
 		
 
 		// GETS ALL USERS
-		app.get('/get-users', (req, res) => {
+		app.get('/get-users', async (req, res) => {
 			db.collection('users').find({}).toArray().then(data => {
 				res.send(data);
 				res.end();
@@ -38,7 +38,7 @@ function getDb(){
 		})
 
 		// ADDS A NEW USER
-		app.post('/add-user/', (req, res) => {
+		app.post('/add-user/', async (req, res) => {
 			const user = {
 				fullname: req.body.fullname,
 				email: req.body.email,
@@ -50,7 +50,7 @@ function getDb(){
 		})
 
 		// CHECKS TO SEE IF USERNAME IS ALREADY TAKEN
-		app.get('/check-user/:username', (req, res) => {
+		app.get('/check-user/:username', async (req, res) => {
 			db.collection('users').find({username: req.params.username}).toArray().then(data => {
 				res.send(data[0]);
 				res.end();
@@ -58,7 +58,7 @@ function getDb(){
 		})
 		 
 		// GETS ADMIN DETAILS
-		app.get('/get-admin', (req, res) => {
+		app.get('/get-admin', async (req, res) => {
 			db.collection('admin').find({}).toArray().then(data => {
 				res.send(data[0]);
 				res.end();
@@ -66,7 +66,7 @@ function getDb(){
 		})
 
 		// GETS ALL VIDEOS
-		app.get('/get-videos/:category', (req, res) => {
+		app.get('/get-videos/:category', async (req, res) => {
 				let category = req.params.category;
 				if(category === 'all'){
 						db.collection('videos').find().toArray().then(data => {
@@ -83,7 +83,7 @@ function getDb(){
 		})
 
 		// GETS A PARTICULAR VIDEO ACCORDING TO ID
-		app.get('/get-video/:id', (req, res) => {
+		app.get('/get-video/:id', async (req, res) => {
 			const id = parseInt(req.params.id);
 			db.collection('videos').find({id}).toArray().then(data => {
 				res.send(data[0]);
@@ -91,7 +91,7 @@ function getDb(){
 			});
 		})
 
-		app.delete('/delete-video/:id', (req, res) => {
+		app.delete('/delete-video/:id', async (req, res) => {
 				const id = parseInt(req.params.id);
 				db.collection('videos').deleteOne({id: id}).then(() => {
 						res.end();
@@ -99,14 +99,14 @@ function getDb(){
 		})
 
 		// GETS ALL THE CATEGORIES
-		app.get('/categories', (req, res) => {
+		app.get('/categories', async (req, res) => {
 			db.collection('categories').find({}).toArray().then(data => {
 				res.send(data);
 				res.end();
 			});
 		})
 
-		app.post('/add-category', (req, res) => {
+		app.post('/add-category', async (req, res) => {
 				
 				db.collection('categories').find({}).toArray().then(data => {
 						let count = 1;
@@ -138,7 +138,7 @@ function getDb(){
 				res.end();
 		})
 
-		app.post('/add-video', (req, res) => {
+		app.post('/add-video', async (req, res) => {
 				db.collection('videos').find({}).toArray().then(data => {
 						let count = 1;
 						let videoId;
