@@ -15,15 +15,17 @@ app.get('/', (req, res) => {
 	res.end('<h1>HELLO WORLD!</h1>');
 })
 
-getDb();
+
 
 // CREATTING A VARIABLE TO STORE DATABASE
 let db;
-function getDb(){
-	mongoClient.connect(conStr).then(clientObj => {
+
+mongoClient.connect(conStr)
+	.then(clientObj => {
 		db = clientObj.db('vidLib');
 		console.log('Connected to Database');
-	}).then(_ => {
+	})
+	.then(_ => {
 		app.listen(PORT)
 		console.log(`SERVER STARTED ON PORT NO. ${PORT}`)
 	})
@@ -51,7 +53,7 @@ app.post('/add-user/', (req, res) => {
 
 // CHECKS TO SEE IF USERNAME IS ALREADY TAKEN
 app.get('/check-user/:username',  (req, res) => {
-	const data = await db.collection('users').find({username: req.params.username}).toArray()
+	const data = db.collection('users').find({username: req.params.username}).toArray()
 	res.send(data[0]);
 	res.end();
 	
@@ -172,7 +174,7 @@ app.post('/add-video',  (req, res) => {
 
 	
 	
-}
+
 
 
 
