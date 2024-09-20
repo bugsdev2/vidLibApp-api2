@@ -8,6 +8,7 @@ app.use(express.json())
 app.use(cors());
 
 const conStr = "mongodb+srv://adithyamanikumar:bugs1234@cluster0.wem7prh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const PORT = process.env.PORT || 5000;
 
 // CREATTING A VARIABLE TO STORE DATABASE
 let database = getDb();
@@ -15,13 +16,13 @@ let db;
 function getDb(){
 	mongoClient.connect(conStr).then(clientObj => {
 		db = clientObj.db('vidLib');
+		console.log('Connected to Database');
+	}).then(_ => {
+		app.listen(PORT)
+		console.log(`SERVER STARTED ON PORT NO. ${PORT}`)
 	});
 }
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT);
-console.log(`SERVER STARTED ON PORT NO. ${PORT}`)
 
 // HOME PAGE
 app.get('/', (req, res) => {
@@ -170,6 +171,6 @@ app.post('/add-video', (req, res) => {
 })
 
 
-export default app;
+module.exports = app;
 
 
