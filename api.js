@@ -30,7 +30,7 @@ function getDb(){
 		
 
 // GETS ALL USERS
-app.get('/get-users', async (req, res) => {
+app.get('/get-users',  (req, res) => {
 	db.collection('users').find({}).toArray().then(data => {
 		res.send(data);
 		res.end();
@@ -38,7 +38,7 @@ app.get('/get-users', async (req, res) => {
 })
 
 // ADDS A NEW USER
-app.post('/add-user/', async (req, res) => {
+app.post('/add-user/', (req, res) => {
 	const user = {
 		fullname: req.body.fullname,
 		email: req.body.email,
@@ -50,7 +50,7 @@ app.post('/add-user/', async (req, res) => {
 })
 
 // CHECKS TO SEE IF USERNAME IS ALREADY TAKEN
-app.get('/check-user/:username', async (req, res) => {
+app.get('/check-user/:username',  (req, res) => {
 	const data = await db.collection('users').find({username: req.params.username}).toArray()
 	res.send(data[0]);
 	res.end();
@@ -58,7 +58,7 @@ app.get('/check-user/:username', async (req, res) => {
 })
  
 // GETS ADMIN DETAILS
-app.get('/get-admin', async (req, res) => {
+app.get('/get-admin',  (req, res) => {
 	db.collection('admin').find({}).toArray().then(data => {
 		res.send(data[0]);
 		res.end();
@@ -66,7 +66,7 @@ app.get('/get-admin', async (req, res) => {
 })
 
 // GETS ALL VIDEOS
-app.get('/get-videos/:category', async (req, res) => {
+app.get('/get-videos/:category',  (req, res) => {
 		let category = req.params.category;
 		if(category === 'all'){
 				db.collection('videos').find().toArray().then(data => {
@@ -83,7 +83,7 @@ app.get('/get-videos/:category', async (req, res) => {
 })
 
 // GETS A PARTICULAR VIDEO ACCORDING TO ID
-app.get('/get-video/:id', async (req, res) => {
+app.get('/get-video/:id',  (req, res) => {
 	const id = parseInt(req.params.id);
 	db.collection('videos').find({id}).toArray().then(data => {
 		res.send(data[0]);
@@ -91,7 +91,7 @@ app.get('/get-video/:id', async (req, res) => {
 	});
 })
 
-app.delete('/delete-video/:id', async (req, res) => {
+app.delete('/delete-video/:id',  (req, res) => {
 		const id = parseInt(req.params.id);
 		db.collection('videos').deleteOne({id: id}).then(() => {
 				res.end();
@@ -99,14 +99,14 @@ app.delete('/delete-video/:id', async (req, res) => {
 })
 
 // GETS ALL THE CATEGORIES
-app.get('/categories', async (req, res) => {
+app.get('/categories',  (req, res) => {
 	db.collection('categories').find({}).toArray().then(data => {
 		res.send(data);
 		res.end();
 	});
 })
 
-app.post('/add-category', async (req, res) => {
+app.post('/add-category',  (req, res) => {
 		
 		db.collection('categories').find({}).toArray().then(data => {
 				let count = 1;
@@ -138,7 +138,7 @@ app.post('/add-category', async (req, res) => {
 		res.end();
 })
 
-app.post('/add-video', async (req, res) => {
+app.post('/add-video',  (req, res) => {
 		db.collection('videos').find({}).toArray().then(data => {
 				let count = 1;
 				let videoId;
