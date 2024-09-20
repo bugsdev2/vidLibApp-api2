@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 	res.end('<h1>HELLO WORLD!</h1>');
 })
 
-let database = getDb();
+getDb();
 
 // CREATTING A VARIABLE TO STORE DATABASE
 let db;
