@@ -52,7 +52,7 @@ app.post('/add-user/', async (req, res) => {
 // CHECKS TO SEE IF USERNAME IS ALREADY TAKEN
 app.get('/check-user/:username', async (req, res) => {
 	const data = await db.collection('users').find({username: req.params.username}).toArray()
-	res.send(await data[0]);
+	res.send(data[0]);
 	res.end();
 	
 })
