@@ -5,7 +5,7 @@ const mongoClient = require('mongodb').MongoClient;
 const app = express();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json())
-app.use(cors());
+//~ app.use(cors());
 
 const conStr = "mongodb+srv://adithyamanikumar:bugs1234@cluster0.wem7prh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const PORT = process.env.PORT || 5000;
@@ -16,18 +16,20 @@ app.get('/', (req, res) => {
 })
 
 
+app.listen(PORT)
+console.log(`SERVER STARTED ON PORT NO. ${PORT}`)
 
 // CREATTING A VARIABLE TO STORE DATABASE
-let db;
 
+let db;
 mongoClient.connect(conStr)
 	.then(clientObj => {
 		db = clientObj.db('vidLib');
 		console.log('Connected to Database');
 	})
 	.then(_ => {
-		app.listen(PORT)
-		console.log(`SERVER STARTED ON PORT NO. ${PORT}`)
+		//~ app.listen(PORT)
+		//~ console.log(`SERVER STARTED ON PORT NO. ${PORT}`)
 	})
 		
 
@@ -52,9 +54,9 @@ app.post('/add-user/', (req, res) => {
 })
 
 // CHECKS TO SEE IF USERNAME IS ALREADY TAKEN
-app.get('/check-user/:username',  (req, res) => {
+app.get('/check-user/:username', async (req, res) => {
 	db.collection('users').find({username: req.params.username}).toArray().then(data => {
-		res.send(data[0]);
+		res.send(data[0]?.username);
 		res.end();
 	});
 })
